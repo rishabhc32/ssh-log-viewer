@@ -1,11 +1,15 @@
 import SwiftUI
+import Observation
+
+// Import the formatting utilities
+import Foundation
 
 struct FileListView: View {
-    @ObservedObject var viewModel: HostViewModel
+    @Bindable var viewModel: HostViewModel
     
     var body: some View {
         VStack {
-            if let selectedHost = viewModel.selectedHost {
+            if viewModel.selectedHost != nil {
                 List {
                     ForEach(viewModel.files) { file in
                         HStack {
@@ -24,11 +28,11 @@ struct FileListView: View {
                             Spacer()
                             
                             VStack(alignment: .trailing) {
-                                Text(formatFileSize(file.size))
+                                Text(FormattingUtils.formatFileSize(file.size))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                                 
-                                Text(formatDate(file.modificationDate))
+                                Text(FormattingUtils.formatDate(file.modificationDate))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
@@ -43,20 +47,7 @@ struct FileListView: View {
             }
         }
     }
-    
-    private func formatFileSize(_ size: Int64) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useKB, .useMB, .useGB]
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: size)
-    }
-    
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
-    }
+
 }
 
 #Preview {

@@ -1,8 +1,9 @@
 import SwiftUI
+import Observation
 
 struct AddHostView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var viewModel: HostViewModel
+    @Bindable var viewModel: HostViewModel
     
     @State private var name: String = ""
     @State private var hostname: String = ""

@@ -1,10 +1,11 @@
 import Foundation
 import SwiftUI
+import Observation
 
-class HostViewModel: ObservableObject {
-    @Published var hosts: [Host] = []
-    @Published var selectedHost: Host?
-    @Published var files: [RemoteFile] = []
+@Observable class HostViewModel {
+    var hosts: [Host] = []
+    var selectedHost: Host?
+    var files: [RemoteFile] = []
     
     init() {
         // Load sample data for demonstration
