@@ -6,6 +6,7 @@ struct Host: Identifiable, Hashable {
     var hostname: String
     var username: String
     var port: Int = 22
+    var files: [RemoteFile] = []
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
