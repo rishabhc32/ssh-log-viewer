@@ -55,10 +55,11 @@ struct MainView: View {
                 Button("Delete", role: .destructive) {
                     if let index = viewModel.hosts.firstIndex(where: { $0.id == host.id }) {
                         viewModel.removeHost(at: IndexSet(integer: index))
+                        hostToDelete = nil
                     }
                 }
             } message: { host in
-                Text("Are you sure you want to delete \(host.name)? This action cannot be undone.")
+                Text("Are you sure you want to delete '\(host.name)'? This action cannot be undone.")
             }
         } detail: {
             FileListView(viewModel: viewModel)
