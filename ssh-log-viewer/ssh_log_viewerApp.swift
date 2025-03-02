@@ -17,8 +17,9 @@ struct ssh_log_viewerApp: App {
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
         .commands {
-            SidebarCommands()
-            ToolbarCommands()
+            //SidebarCommands()
+            //ToolbarCommands()
+            HostCommands()
         }
     }
 }

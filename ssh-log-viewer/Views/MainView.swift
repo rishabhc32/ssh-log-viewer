@@ -1,6 +1,19 @@
 import SwiftUI
 import Observation
 
+// 1. Define a FocusedValueKey for the add-host action.
+struct AddHostActionKey: FocusedValueKey {
+    typealias Value = () -> Void
+}
+
+// 2. Extend FocusedValues to include an addHostAction.
+extension FocusedValues {
+    var addHostAction: (() -> Void)? {
+        get { self[AddHostActionKey.self] }
+        set { self[AddHostActionKey.self] = newValue }
+    }
+}
+
 struct MainView: View {
     @State private var viewModel = HostViewModel()
     @State private var showingAddHost = false
@@ -73,6 +86,8 @@ struct MainView: View {
                 .padding(.bottom)
             }
             .navigationTitle("SSH Log Viewer")
+            // Attach the focused value so that command groups can access it.
+            .focusedValue(\.addHostAction, { self.showingAddHost = true })
             .sheet(isPresented: $showingAddHost) {
                 AddHostView(viewModel: viewModel)
             }
