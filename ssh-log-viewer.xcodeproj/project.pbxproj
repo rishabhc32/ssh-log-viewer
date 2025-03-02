@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		716D00062D74DF1F003976AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 716DFFE22D74DF1E003976AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 716DFFE92D74DF1E003976AB;
+			remoteInfo = "ssh-log-viewer";
+		};
+		716DFFFC2D74DF1F003976AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 716DFFE22D74DF1E003976AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 716DFFE92D74DF1E003976AB;
+			remoteInfo = "ssh-log-viewer";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		716D00052D74DF1F003976AB /* ssh-log-viewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ssh-log-viewerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		716DFFEA2D74DF1E003976AB /* ssh-log-viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ssh-log-viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		716DFFFB2D74DF1F003976AB /* ssh-log-viewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ssh-log-viewerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		716D00082D74DF1F003976AB /* ssh-log-viewerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "ssh-log-viewerUITests";
+			sourceTree = "<group>";
+		};
+		716DFFEC2D74DF1E003976AB /* ssh-log-viewer */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "ssh-log-viewer";
+			sourceTree = "<group>";
+		};
+		716DFFFE2D74DF1F003976AB /* ssh-log-viewerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "ssh-log-viewerTests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		716D00022D74DF1F003976AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		716DFFE72D74DF1E003976AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		716DFFF82D74DF1F003976AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		716DFFE12D74DF1E003976AB = {
+			isa = PBXGroup;
+			children = (
+				716DFFEC2D74DF1E003976AB /* ssh-log-viewer */,
+				716DFFFE2D74DF1F003976AB /* ssh-log-viewerTests */,
+				716D00082D74DF1F003976AB /* ssh-log-viewerUITests */,
+				716DFFEB2D74DF1E003976AB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		716DFFEB2D74DF1E003976AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				716DFFEA2D74DF1E003976AB /* ssh-log-viewer.app */,
+				716DFFFB2D74DF1F003976AB /* ssh-log-viewerTests.xctest */,
+				716D00052D74DF1F003976AB /* ssh-log-viewerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		716D00042D74DF1F003976AB /* ssh-log-viewerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 716D00152D74DF1F003976AB /* Build configuration list for PBXNativeTarget "ssh-log-viewerUITests" */;
+			buildPhases = (
+				716D00012D74DF1F003976AB /* Sources */,
+				716D00022D74DF1F003976AB /* Frameworks */,
+				716D00032D74DF1F003976AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				716D00072D74DF1F003976AB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				716D00082D74DF1F003976AB /* ssh-log-viewerUITests */,
+			);
+			name = "ssh-log-viewerUITests";
+			packageProductDependencies = (
+			);
+			productName = "ssh-log-viewerUITests";
+			productReference = 716D00052D74DF1F003976AB /* ssh-log-viewerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		716DFFE92D74DF1E003976AB /* ssh-log-viewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 716D000F2D74DF1F003976AB /* Build configuration list for PBXNativeTarget "ssh-log-viewer" */;
+			buildPhases = (
+				716DFFE62D74DF1E003976AB /* Sources */,
+				716DFFE72D74DF1E003976AB /* Frameworks */,
+				716DFFE82D74DF1E003976AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				716DFFEC2D74DF1E003976AB /* ssh-log-viewer */,
+			);
+			name = "ssh-log-viewer";
+			packageProductDependencies = (
+			);
+			productName = "ssh-log-viewer";
+			productReference = 716DFFEA2D74DF1E003976AB /* ssh-log-viewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		716DFFFA2D74DF1F003976AB /* ssh-log-viewerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 716D00122D74DF1F003976AB /* Build configuration list for PBXNativeTarget "ssh-log-viewerTests" */;
+			buildPhases = (
+				716DFFF72D74DF1F003976AB /* Sources */,
+				716DFFF82D74DF1F003976AB /* Frameworks */,
+				716DFFF92D74DF1F003976AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				716DFFFD2D74DF1F003976AB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				716DFFFE2D74DF1F003976AB /* ssh-log-viewerTests */,
+			);
+			name = "ssh-log-viewerTests";
+			packageProductDependencies = (
+			);
+			productName = "ssh-log-viewerTests";
+			productReference = 716DFFFB2D74DF1F003976AB /* ssh-log-viewerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		716DFFE22D74DF1E003976AB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					716D00042D74DF1F003976AB = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 716DFFE92D74DF1E003976AB;
+					};
+					716DFFE92D74DF1E003976AB = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					716DFFFA2D74DF1F003976AB = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 716DFFE92D74DF1E003976AB;
+					};
+				};
+			};
+			buildConfigurationList = 716DFFE52D74DF1E003976AB /* Build configuration list for PBXProject "ssh-log-viewer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 716DFFE12D74DF1E003976AB;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 716DFFEB2D74DF1E003976AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				716DFFE92D74DF1E003976AB /* ssh-log-viewer */,
+				716DFFFA2D74DF1F003976AB /* ssh-log-viewerTests */,
+				716D00042D74DF1F003976AB /* ssh-log-viewerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		716D00032D74DF1F003976AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		716DFFE82D74DF1E003976AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		716DFFF92D74DF1F003976AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		716D00012D74DF1F003976AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		716DFFE62D74DF1E003976AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		716DFFF72D74DF1F003976AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		716D00072D74DF1F003976AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 716DFFE92D74DF1E003976AB /* ssh-log-viewer */;
+			targetProxy = 716D00062D74DF1F003976AB /* PBXContainerItemProxy */;
+		};
+		716DFFFD2D74DF1F003976AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 716DFFE92D74DF1E003976AB /* ssh-log-viewer */;
+			targetProxy = 716DFFFC2D74DF1F003976AB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		716D000D2D74DF1F003976AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		716D000E2D74DF1F003976AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		716D00102D74DF1F003976AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "ssh-log-viewer/ssh_log_viewer.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ssh-log-viewer/Preview Content\"";
+				DEVELOPMENT_TEAM = S9VQ9L2X86;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lun.ssh-log-viewer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		716D00112D74DF1F003976AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "ssh-log-viewer/ssh_log_viewer.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ssh-log-viewer/Preview Content\"";
+				DEVELOPMENT_TEAM = S9VQ9L2X86;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lun.ssh-log-viewer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		716D00132D74DF1F003976AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S9VQ9L2X86;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lun.ssh-log-viewerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ssh-log-viewer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ssh-log-viewer";
+			};
+			name = Debug;
+		};
+		716D00142D74DF1F003976AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S9VQ9L2X86;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lun.ssh-log-viewerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ssh-log-viewer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ssh-log-viewer";
+			};
+			name = Release;
+		};
+		716D00162D74DF1F003976AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S9VQ9L2X86;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lun.ssh-log-viewerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "ssh-log-viewer";
+			};
+			name = Debug;
+		};
+		716D00172D74DF1F003976AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S9VQ9L2X86;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.lun.ssh-log-viewerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "ssh-log-viewer";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		716D000F2D74DF1F003976AB /* Build configuration list for PBXNativeTarget "ssh-log-viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				716D00102D74DF1F003976AB /* Debug */,
+				716D00112D74DF1F003976AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		716D00122D74DF1F003976AB /* Build configuration list for PBXNativeTarget "ssh-log-viewerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				716D00132D74DF1F003976AB /* Debug */,
+				716D00142D74DF1F003976AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		716D00152D74DF1F003976AB /* Build configuration list for PBXNativeTarget "ssh-log-viewerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				716D00162D74DF1F003976AB /* Debug */,
+				716D00172D74DF1F003976AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		716DFFE52D74DF1E003976AB /* Build configuration list for PBXProject "ssh-log-viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				716D000D2D74DF1F003976AB /* Debug */,
+				716D000E2D74DF1F003976AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 716DFFE22D74DF1E003976AB /* Project object */;
+}
