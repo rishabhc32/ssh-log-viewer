@@ -36,6 +36,8 @@ struct MainView: View {
                                 }) {
                                     Label("Delete", systemImage: "trash")
                                 }
+                                .keyboardShortcut("d", modifiers: [.command])
+
                             }
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive, action: {
@@ -53,6 +55,7 @@ struct MainView: View {
                     }) {
                         Label("Add Host", systemImage: "plus")
                     }
+                    .keyboardShortcut("n", modifiers: [.command, .shift])
                 }
                 
                 Button(action: {
@@ -67,6 +70,7 @@ struct MainView: View {
                 .buttonStyle(.borderedProminent)
                 .padding(.horizontal)
                 .padding(.bottom)
+                .help("Add a new host (⌘⇧N)")
             }
             .navigationTitle("SSH Log Viewer")
             .focusedValue(\.hostActions, HostActions(

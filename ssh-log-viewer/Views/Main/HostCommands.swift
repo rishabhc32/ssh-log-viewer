@@ -24,7 +24,7 @@ struct HostCommands: Commands {
             Button("Add Host") {
                 hostActions?.add()
             }
-            .keyboardShortcut("n", modifiers: .command)
+            .keyboardShortcut("n", modifiers: [.command, .shift])
             
             Divider()
             
