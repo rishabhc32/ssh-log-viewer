@@ -8,6 +8,7 @@ import SwiftUI
 
 struct HostCommands: Commands {
     @FocusedValue(\.addHostAction) var addHostAction
+    @FocusedValue(\.deleteHostAction) var deleteHostAction
 
     var body: some Commands {
         CommandMenu("Hosts") {
@@ -15,6 +16,14 @@ struct HostCommands: Commands {
                 addHostAction?()
             }
             .keyboardShortcut("n", modifiers: .command)
+            
+            Divider()
+            
+            Button("Delete Host") {
+                deleteHostAction?()
+            }
+            .keyboardShortcut("d", modifiers: .command)
+            .disabled(deleteHostAction == nil)
         }
     }
 }

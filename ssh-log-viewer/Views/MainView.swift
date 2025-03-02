@@ -6,11 +6,21 @@ struct AddHostActionKey: FocusedValueKey {
     typealias Value = () -> Void
 }
 
-// 2. Extend FocusedValues to include an addHostAction.
+// 2. Define a FocusedValueKey for the delete-host action.
+struct DeleteHostActionKey: FocusedValueKey {
+    typealias Value = () -> Void
+}
+
+// 3. Extend FocusedValues to include an addHostAction and deleteHostAction.
 extension FocusedValues {
     var addHostAction: (() -> Void)? {
         get { self[AddHostActionKey.self] }
         set { self[AddHostActionKey.self] = newValue }
+    }
+    
+    var deleteHostAction: (() -> Void)? {
+        get { self[DeleteHostActionKey.self] }
+        set { self[DeleteHostActionKey.self] = newValue }
     }
 }
 
@@ -86,8 +96,14 @@ struct MainView: View {
                 .padding(.bottom)
             }
             .navigationTitle("SSH Log Viewer")
-            // Attach the focused value so that command groups can access it.
+            // Attach the focused values so that command groups can access them.
             .focusedValue(\.addHostAction, { self.showingAddHost = true })
+            .focusedValue(\.deleteHostAction, {
+                if let host = viewModel.selectedHost {
+                    hostToDelete = host
+                    showingDeleteConfirmation = true
+                }
+            })
             .sheet(isPresented: $showingAddHost) {
                 AddHostView(viewModel: viewModel)
             }
