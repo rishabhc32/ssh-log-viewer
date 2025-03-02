@@ -10,54 +10,26 @@ struct MainView: View {
         hostToDelete = host
     }
     
+    private func triggerAddHost() {
+        showingAddHost = true
+    }
+    
     var body: some View {
         NavigationSplitView {
             VStack {
-                List(selection: $viewModel.selectedHost) {
-                    Section(header: Text("Hosts")) {
-                        ForEach(viewModel.hosts) { host in
-                            HStack {
-                                Image(systemName: "server.rack")
-                                    .foregroundColor(.blue)
-                                VStack(alignment: .leading) {
-                                    Text(host.name)
-                                        .font(.headline)
-                                    Text("\(host.username)@\(host.hostname):\(host.port)")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            .tag(host)
-                            .contextMenu {
-                                Button(role: .destructive, action: {
-                                    triggerDelete(for: host)
-                                }) {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                                .keyboardShortcut("d", modifiers: [.command])
-
-                            }
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive, action: {
-                                    triggerDelete(for: host)
-                                }) {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
-                        }
-                    }
-                }
-                .contextMenu {
-                    Button(action: {
-                        showingAddHost = true
-                    }) {
-                        Label("Add Host", systemImage: "plus")
-                    }
-                    .keyboardShortcut("n", modifiers: [.command, .shift])
+                if viewModel.hosts.isEmpty {
+                    EmptyStateView()
+                } else {
+                    HostListView(
+                        selectedHost: $viewModel.selectedHost,
+                        hosts: viewModel.hosts,
+                        addHostAction: triggerAddHost,
+                        deleteAction: triggerDelete
+                    )
                 }
                 
                 Button(action: {
-                    showingAddHost = true
+                    triggerAddHost()
                 }) {
                     HStack {
                         Image(systemName: "plus")
@@ -72,7 +44,7 @@ struct MainView: View {
             }
             .navigationTitle("SSH Log Viewer")
             .focusedValue(\.hostActions, HostActions(
-                add: { self.showingAddHost = true },
+                add: triggerAddHost,
                 delete: { if let selectedHost = viewModel.selectedHost { triggerDelete(for: selectedHost) } }
             ))
             .sheet(isPresented: $showingAddHost) {
