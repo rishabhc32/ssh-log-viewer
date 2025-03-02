@@ -1,37 +1,16 @@
 import SwiftUI
 import Observation
 
-// 1. Define a FocusedValueKey for the add-host action.
-struct AddHostActionKey: FocusedValueKey {
-    typealias Value = () -> Void
-}
-
-// 2. Define a FocusedValueKey for the delete-host action.
-struct DeleteHostActionKey: FocusedValueKey {
-    typealias Value = () -> Void
-}
-
-// 3. Extend FocusedValues to include an addHostAction and deleteHostAction.
-extension FocusedValues {
-    var addHostAction: (() -> Void)? {
-        get { self[AddHostActionKey.self] }
-        set { self[AddHostActionKey.self] = newValue }
-    }
-    
-    var deleteHostAction: (() -> Void)? {
-        get { self[DeleteHostActionKey.self] }
-        set { self[DeleteHostActionKey.self] = newValue }
-    }
-}
-
 struct MainView: View {
     @State private var viewModel = HostViewModel()
     @State private var showingAddHost = false
     @State private var hostToDelete: Host? = nil
     @State private var showingDeleteConfirmation = false
-    @State private var indexSetToDelete: IndexSet? = nil
-    @State private var showingIndexSetDeleteConfirmation = false
-    
+
+    private func triggerDelete(for host: Host) {        
+        hostToDelete = host
+        showingDeleteConfirmation = true
+    }
     
     var body: some View {
         NavigationSplitView {
@@ -53,24 +32,18 @@ struct MainView: View {
                             .tag(host)
                             .contextMenu {
                                 Button(role: .destructive, action: {
-                                    hostToDelete = host
-                                    showingDeleteConfirmation = true
+                                    triggerDelete(for: host)
                                 }) {
                                     Label("Delete", systemImage: "trash")
                                 }
                             }
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive, action: {
-                                    hostToDelete = host
-                                    showingDeleteConfirmation = true
+                                    triggerDelete(for: host)
                                 }) {
                                     Label("Delete", systemImage: "trash")
                                 }
                             }
-                        }
-                        .onDelete { indexSet in
-                            indexSetToDelete = indexSet
-                            showingIndexSetDeleteConfirmation = true
                         }
                     }
                 }
@@ -96,14 +69,10 @@ struct MainView: View {
                 .padding(.bottom)
             }
             .navigationTitle("SSH Log Viewer")
-            // Attach the focused values so that command groups can access them.
-            .focusedValue(\.addHostAction, { self.showingAddHost = true })
-            .focusedValue(\.deleteHostAction, {
-                if let host = viewModel.selectedHost {
-                    hostToDelete = host
-                    showingDeleteConfirmation = true
-                }
-            })
+            .focusedValue(\.hostActions, HostActions(
+                add: { self.showingAddHost = true },
+                delete: { if let selectedHost = viewModel.selectedHost { triggerDelete(for: selectedHost) } }
+            ))
             .sheet(isPresented: $showingAddHost) {
                 AddHostView(viewModel: viewModel)
             }
@@ -116,16 +85,6 @@ struct MainView: View {
                 }
             } message: { host in
                 Text("Are you sure you want to delete \(host.name)? This action cannot be undone.")
-            }
-            .alert("Delete Host", isPresented: $showingIndexSetDeleteConfirmation) {
-                Button("Cancel", role: .cancel) {}
-                Button("Delete", role: .destructive) {
-                    if let indexSet = indexSetToDelete {
-                        viewModel.removeHost(at: indexSet)
-                    }
-                }
-            } message: {
-                Text("Are you sure you want to delete this host? This action cannot be undone.")
             }
         } detail: {
             FileListView(viewModel: viewModel)
