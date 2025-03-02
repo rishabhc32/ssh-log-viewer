@@ -51,6 +51,13 @@ struct MainView: View {
                         }
                     }
                 }
+                .contextMenu {
+                    Button(action: {
+                        showingAddHost = true
+                    }) {
+                        Label("Add Host", systemImage: "plus")
+                    }
+                }
                 
                 Button(action: {
                     showingAddHost = true
