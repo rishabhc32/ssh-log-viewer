@@ -61,7 +61,7 @@ struct HostListView: View {
 }
 
 // MARK: - Previews
-#Preview("Host List") {
+#Preview {
     HostListView(
         selectedHost: .constant(nil),
         hosts: [

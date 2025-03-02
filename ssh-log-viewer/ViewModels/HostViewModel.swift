@@ -25,11 +25,6 @@ import Observation
         }
     }
     
-    func selectHost(_ host: Host) {
-        selectedHost = host
-        loadFiles()
-    }
-    
     func loadFiles() {
         guard selectedHost != nil else {
             files = []
