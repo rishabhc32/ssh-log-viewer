@@ -5,11 +5,9 @@ struct MainView: View {
     @State private var viewModel = HostViewModel()
     @State private var showingAddHost = false
     @State private var hostToDelete: Host? = nil
-    @State private var showingDeleteConfirmation = false
 
     private func triggerDelete(for host: Host) {        
         hostToDelete = host
-        showingDeleteConfirmation = true
     }
     
     var body: some View {
@@ -80,8 +78,8 @@ struct MainView: View {
             .sheet(isPresented: $showingAddHost) {
                 AddHostView(viewModel: viewModel)
             }
-            .alert("Delete Host", isPresented: $showingDeleteConfirmation, presenting: hostToDelete) { host in
-                Button("Cancel", role: .cancel) {}
+            .alert("Delete Host", isPresented: .constant(hostToDelete != nil), presenting: hostToDelete) { host in
+                Button("Cancel", role: .cancel) { hostToDelete = nil }
                 Button("Delete", role: .destructive) {
                     if let index = viewModel.hosts.firstIndex(where: { $0.id == host.id }) {
                         viewModel.removeHost(at: IndexSet(integer: index))
