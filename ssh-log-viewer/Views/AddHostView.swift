@@ -1,15 +1,15 @@
-import SwiftUI
 import Observation
+import SwiftUI
 
 struct AddHostView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var viewModel: HostViewModel
-    
+
     @State private var name: String = ""
     @State private var hostname: String = ""
     @State private var username: String = ""
     @State private var port: String = "22"
-    
+
     var body: some View {
         VStack {
             Form {
@@ -20,18 +20,20 @@ struct AddHostView: View {
                     TextField("Port", text: $port)
                 }
             }
-            
+
             HStack {
                 Button("Cancel") {
                     dismiss()
                 }
                 .keyboardShortcut(.cancelAction)
-                
+
                 Spacer()
-                
+
                 Button("Add") {
                     let portNumber = Int(port) ?? 22
-                    viewModel.addHost(name: name, hostname: hostname, username: username, port: portNumber)
+                    viewModel.addHost(
+                        name: name, hostname: hostname, username: username, port: portNumber
+                    )
                     dismiss()
                 }
                 .keyboardShortcut(.defaultAction)

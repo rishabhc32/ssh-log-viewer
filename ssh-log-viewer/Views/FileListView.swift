@@ -1,12 +1,11 @@
-import SwiftUI
-import Observation
-
 // Import the formatting utilities
 import Foundation
+import Observation
+import SwiftUI
 
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
-    
+
     var body: some View {
         VStack {
             if viewModel.selectedHost != nil {
@@ -15,23 +14,23 @@ struct FileListView: View {
                         HStack {
                             Image(systemName: file.isDirectory ? "folder" : "doc")
                                 .foregroundColor(file.isDirectory ? .blue : .gray)
-                            
+
                             VStack(alignment: .leading) {
                                 Text(file.name)
                                     .font(.headline)
-                                
+
                                 Text(file.path)
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             VStack(alignment: .trailing) {
                                 Text(FormattingUtils.formatFileSize(file.size))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
-                                
+
                                 Text(FormattingUtils.formatDate(file.modificationDate))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
