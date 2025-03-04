@@ -20,12 +20,20 @@ struct MainView: View {
                 if viewModel.hosts.isEmpty {
                     EmptyStateView()
                 } else {
-                    HostListView(
-                        selectedHost: $viewModel.selectedHost,
-                        hosts: viewModel.hosts,
-                        addHostAction: triggerAddHost,
-                        deleteAction: triggerDelete
-                    )
+                    List(selection: $viewModel.selectedHost) {
+                        Section(header: Text("Hosts")) {
+                            ForEach(viewModel.hosts) { host in
+                                HostRowView(host: host, deleteAction: triggerDelete)
+                                    .tag(host)
+                            }
+                        }
+                    }
+                    .contextMenu {  
+                        Button(action: triggerAddHost) {
+                            Label("Add Host", systemImage: "plus")
+                        }
+                        .keyboardShortcut("n", modifiers: [.command, .shift])
+                    }
                 }
                 
                 Button(action: {
