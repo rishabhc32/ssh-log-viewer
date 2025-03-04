@@ -1,19 +1,19 @@
-import SwiftUI
 import Observation
+import SwiftUI
 
 struct MainView: View {
     @State private var viewModel = HostViewModel()
     @State private var showingAddHost = false
     @State private var hostToDelete: Host? = nil
 
-    private func triggerDelete(for host: Host) {        
+    private func triggerDelete(for host: Host) {
         hostToDelete = host
     }
-    
+
     private func triggerAddHost() {
         showingAddHost = true
     }
-    
+
     var body: some View {
         NavigationSplitView {
             VStack {
@@ -28,14 +28,14 @@ struct MainView: View {
                             }
                         }
                     }
-                    .contextMenu {  
+                    .contextMenu {
                         Button(action: triggerAddHost) {
                             Label("Add Host", systemImage: "plus")
                         }
                         .keyboardShortcut("n", modifiers: [.command, .shift])
                     }
                 }
-                
+
                 Button(action: {
                     triggerAddHost()
                 }) {
