@@ -3,41 +3,66 @@ import Observation
 
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
-
+    @State private var position: UUID?
+    @State private var scrollHistory: [UUID: UUID] = [:]
+    
     var body: some View {
         VStack {
             if let selectedHost = viewModel.selectedHost {
-                List {
-                    ForEach(viewModel.files) { file in
-                        HStack {
-                            Image(systemName: file.isDirectory ? "folder" : "doc")
-                                .foregroundColor(file.isDirectory ? .blue : .gray)
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(viewModel.files) { file in
+                                HStack {
+                                    Image(systemName: file.isDirectory ? "folder" : "doc")
+                                        .foregroundColor(file.isDirectory ? .blue : .gray)
 
-                            VStack(alignment: .leading) {
-                                Text(file.name)
-                                    .font(.headline)
+                                    VStack(alignment: .leading) {
+                                        Text(file.name)
+                                            .font(.headline)
 
-                                Text(file.path)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
+                                        Text(file.path)
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                    }
 
-                            Spacer()
+                                    Spacer()
 
-                            VStack(alignment: .trailing) {
-                                Text(FormattingUtils.formatFileSize(file.size))
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    VStack(alignment: .trailing) {
+                                        Text(FormattingUtils.formatFileSize(file.size))
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
 
-                                Text(FormattingUtils.formatDate(file.modificationDate))
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                        Text(FormattingUtils.formatDate(file.modificationDate))
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                .id(file.id)
+                                .padding(.vertical, 4)
                             }
                         }
-                        .padding(.vertical, 4)
+                        .scrollTargetLayout()
                     }
+                    .scrollPosition(id: $position)
+                    .onChange(of: position) { oldValue, newValue in
+                        if (oldValue != newValue && newValue != nil) {
+                            scrollHistory[selectedHost.id] = newValue
+                        }
+                    }
+                    .onChange(of: selectedHost.id) { oldId, newId in
+                        print("Host changed")
+                        if let value = scrollHistory[selectedHost.id] {
+                            print("Scrolling to: ", value)
+                            proxy.scrollTo(value, anchor: .top)
+                        } else {
+                            print("Scroll to top")
+                            proxy.scrollTo(selectedHost.files[0].id, anchor: .top)
+                        }
+                    }
+
                 }
-                .id(selectedHost.id) // Unique ID per host prevents sync
+               
             } else {
                 Text("Select a host to view files")
                     .foregroundColor(.secondary)
