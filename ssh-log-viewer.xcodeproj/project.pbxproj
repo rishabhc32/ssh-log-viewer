@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		716D009F2D7781A5003976AB /* mft.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 716D009E2D7781A5003976AB /* mft.xcframework */; };
+		716D00A02D7781A5003976AB /* mft.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 716D009E2D7781A5003976AB /* mft.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		716D00062D74DF1F003976AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -23,8 +28,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		716D00A12D7781A5003976AB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				716D00A02D7781A5003976AB /* mft.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		716D00052D74DF1F003976AB /* ssh-log-viewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ssh-log-viewerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		716D009E2D7781A5003976AB /* mft.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = mft.xcframework; path = "../mft 2025-03-05 00-13-55/mft.xcframework"; sourceTree = "<group>"; };
 		716DFFEA2D74DF1E003976AB /* ssh-log-viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ssh-log-viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		716DFFFB2D74DF1F003976AB /* ssh-log-viewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ssh-log-viewerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -59,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				716D009F2D7781A5003976AB /* mft.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +93,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		716D009D2D7781A5003976AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				716D009E2D7781A5003976AB /* mft.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		716DFFE12D74DF1E003976AB = {
 			isa = PBXGroup;
 			children = (
 				716DFFEC2D74DF1E003976AB /* ssh-log-viewer */,
 				716DFFFE2D74DF1F003976AB /* ssh-log-viewerTests */,
 				716D00082D74DF1F003976AB /* ssh-log-viewerUITests */,
+				716D009D2D7781A5003976AB /* Frameworks */,
 				716DFFEB2D74DF1E003976AB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,6 +155,7 @@
 				716DFFE62D74DF1E003976AB /* Sources */,
 				716DFFE72D74DF1E003976AB /* Frameworks */,
 				716DFFE82D74DF1E003976AB /* Resources */,
+				716D00A12D7781A5003976AB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -195,6 +226,8 @@
 			);
 			mainGroup = 716DFFE12D74DF1E003976AB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 716DFFEB2D74DF1E003976AB /* Products */;
 			projectDirPath = "";
@@ -390,7 +423,7 @@
 		716D00102D74DF1F003976AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = I;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "ssh-log-viewer/ssh_log_viewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
@@ -416,7 +449,7 @@
 		716D00112D74DF1F003976AB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = I;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "ssh-log-viewer/ssh_log_viewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
