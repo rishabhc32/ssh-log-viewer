@@ -1,14 +1,12 @@
-// Import the formatting utilities
-import Foundation
-import Observation
 import SwiftUI
+import Observation
 
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
 
     var body: some View {
         VStack {
-            if viewModel.selectedHost != nil {
+            if let selectedHost = viewModel.selectedHost {
                 List {
                     ForEach(viewModel.files) { file in
                         HStack {
@@ -39,6 +37,7 @@ struct FileListView: View {
                         .padding(.vertical, 4)
                     }
                 }
+                .id(selectedHost.id) // Unique ID per host prevents sync
             } else {
                 Text("Select a host to view files")
                     .foregroundColor(.secondary)
@@ -46,7 +45,6 @@ struct FileListView: View {
             }
         }
     }
-
 }
 
 #Preview {
