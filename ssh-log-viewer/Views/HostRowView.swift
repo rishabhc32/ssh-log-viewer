@@ -3,7 +3,7 @@ import SwiftUI
 struct HostRowView: View {
     let host: Host
     let deleteAction: (Host) -> Void
-    
+
     var body: some View {
         HStack {
             Image(systemName: "server.rack")
@@ -17,17 +17,23 @@ struct HostRowView: View {
             }
         }
         .contextMenu {
-            Button(role: .destructive, action: {
-                deleteAction(host)
-            }) {
+            Button(
+                role: .destructive,
+                action: {
+                    deleteAction(host)
+                }
+            ) {
                 Label("Delete", systemImage: "trash")
             }
             .keyboardShortcut("d", modifiers: [.command])
         }
         .swipeActions(edge: .trailing) {
-            Button(role: .destructive, action: {
-                deleteAction(host)
-            }) {
+            Button(
+                role: .destructive,
+                action: {
+                    deleteAction(host)
+                }
+            ) {
                 Label("Delete", systemImage: "trash")
             }
         }

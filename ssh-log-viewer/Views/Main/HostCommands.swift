@@ -25,9 +25,9 @@ struct HostCommands: Commands {
                 hostActions?.add()
             }
             .keyboardShortcut("n", modifiers: [.command, .shift])
-            
+
             Divider()
-            
+
             Button("Delete Host") {
                 hostActions?.delete()
             }

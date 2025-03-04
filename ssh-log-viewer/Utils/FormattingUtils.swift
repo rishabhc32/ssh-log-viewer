@@ -7,7 +7,7 @@ enum FormattingUtils {
         formatter.countStyle = .file
         return formatter.string(fromByteCount: size)
     }
-    
+
     static func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short

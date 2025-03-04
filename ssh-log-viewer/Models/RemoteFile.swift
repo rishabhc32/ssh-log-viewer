@@ -7,11 +7,11 @@ struct RemoteFile: Identifiable, Hashable {
     var isDirectory: Bool
     var size: Int64
     var modificationDate: Date
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: RemoteFile, rhs: RemoteFile) -> Bool {
         lhs.id == rhs.id
     }
