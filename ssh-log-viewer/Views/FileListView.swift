@@ -17,8 +17,9 @@ struct FileListView: View {
                                     HStack {
                                         Image(systemName: file.isDirectory ? "folder" : "doc")
                                             .foregroundColor(file.isDirectory ? .blue : .gray)
-                                            .frame(width: 24)
-                                            .padding(.trailing, 4)
+                                            .font(.system(size: 16))
+                                            .frame(width: 26)
+                                            .padding(.trailing, 5)
 
                                         VStack(alignment: .leading) {
                                             Text(file.name)
