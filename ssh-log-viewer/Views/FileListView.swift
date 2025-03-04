@@ -13,33 +13,40 @@ struct FileListView: View {
                     ScrollView {
                         LazyVStack {
                             ForEach(viewModel.files) { file in
-                                HStack {
-                                    Image(systemName: file.isDirectory ? "folder" : "doc")
-                                        .foregroundColor(file.isDirectory ? .blue : .gray)
+                                VStack(spacing: 0) {
+                                    HStack {
+                                        Image(systemName: file.isDirectory ? "folder" : "doc")
+                                            .foregroundColor(file.isDirectory ? .blue : .gray)
+                                            .frame(width: 24)
+                                            .padding(.trailing, 4)
 
-                                    VStack(alignment: .leading) {
-                                        Text(file.name)
-                                            .font(.headline)
+                                        VStack(alignment: .leading) {
+                                            Text(file.name)
+                                                .font(.headline)
 
-                                        Text(file.path)
-                                            .font(.subheadline)
-                                            .foregroundColor(.secondary)
+                                            Text(file.path)
+                                                .font(.subheadline)
+                                                .foregroundColor(.secondary)
+                                        }
+
+                                        Spacer()
+
+                                        VStack(alignment: .trailing) {
+                                            Text(FormattingUtils.formatFileSize(file.size))
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+
+                                            Text(FormattingUtils.formatDate(file.modificationDate))
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
                                     }
-
-                                    Spacer()
-
-                                    VStack(alignment: .trailing) {
-                                        Text(FormattingUtils.formatFileSize(file.size))
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-
-                                        Text(FormattingUtils.formatDate(file.modificationDate))
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
+                                    .padding(.vertical, 8)
+                                    .padding(.horizontal, 12)
+                                    
+                                    Divider()
                                 }
                                 .id(file.id)
-                                .padding(.vertical, 4)
                             }
                         }
                         .scrollTargetLayout()
