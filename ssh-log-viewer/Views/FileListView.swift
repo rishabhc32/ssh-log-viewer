@@ -6,12 +6,21 @@ struct FileListView: View {
     @State private var position: UUID?
     @State private var scrollHistory: [UUID: UUID] = [:]
     
+    private let topId = "topSpacer"
+    
     var body: some View {
         VStack {
             if let selectedHost = viewModel.selectedHost {
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack {
+                            // Add top padding to the first element
+                            if !viewModel.files.isEmpty {
+                                Spacer()
+                                    .frame(height: 6)
+                                    .id(topId)
+                            }
+                            
                             ForEach(viewModel.files) { file in
                                 VStack(spacing: 0) {
                                     HStack {
@@ -42,8 +51,9 @@ struct FileListView: View {
                                                 .foregroundColor(.secondary)
                                         }
                                     }
-                                    .padding(.vertical, 8)
                                     .padding(.horizontal, 12)
+                                    .padding(.top, 0)
+                                    .padding(.bottom, 6)
                                     
                                     Divider()
                                 }
@@ -65,7 +75,7 @@ struct FileListView: View {
                             proxy.scrollTo(value, anchor: .top)
                         } else {
                             print("Scroll to top")
-                            proxy.scrollTo(selectedHost.files[0].id, anchor: .top)
+                            proxy.scrollTo(topId, anchor: .top)
                         }
                     }
 
