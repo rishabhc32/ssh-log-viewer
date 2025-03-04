@@ -95,3 +95,9 @@ struct FileListView: View {
 #Preview {
     FileListView(viewModel: HostViewModel())
 }
+
+#Preview("NoHost") {
+    let viewModel = HostViewModel()
+    viewModel.selectedHost = nil
+    return FileListView(viewModel: viewModel)
+}
