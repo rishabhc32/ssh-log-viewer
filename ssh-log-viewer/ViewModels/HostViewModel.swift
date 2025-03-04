@@ -97,9 +97,9 @@ import Observation
             ("alternatives.log", "/var/log/alternatives.log", Int64(32768))
         ]
         
-        // Add random directories (3-7)
+        // Add random directories
         let shuffledDirectories = possibleDirectories.shuffled()
-        let directoryCount = Int.random(in: 3...7)
+        let directoryCount = Int.random(in: 10...20)
         
         for i in 0..<min(directoryCount, shuffledDirectories.count) {
             let dir = shuffledDirectories[i]
