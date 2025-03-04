@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Host Row View
 struct HostRowView: View {
     let host: Host
     let deleteAction: (Host) -> Void
@@ -35,7 +34,6 @@ struct HostRowView: View {
     }
 }
 
-// MARK: - Previews
 #Preview {
     List {
         Section(header: Text("Hosts")) {
