@@ -1,0 +1,5 @@
+import mft
+
+class SSHManager {
+    
+}
