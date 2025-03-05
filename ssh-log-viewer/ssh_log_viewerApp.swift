@@ -12,7 +12,7 @@ struct ssh_log_viewerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .frame(minWidth: 800, minHeight: 600)
+                .frame(minWidth: 800)
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
