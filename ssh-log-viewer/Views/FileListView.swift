@@ -15,7 +15,7 @@ struct FileRowView: View {
 
                 VStack(alignment: .leading) {
                     Text(file.name)
-                        .font(.headline)
+                        .font(.body)
 
                     Text(file.path)
                         .font(.subheadline)
@@ -70,6 +70,7 @@ struct FileListView: View {
                         }
                         .scrollTargetLayout()
                     }
+                    .background(.background)
                     .scrollPosition(id: $position)
                     .onChange(of: position) { oldValue, newValue in
                         if oldValue != newValue && newValue != nil {
