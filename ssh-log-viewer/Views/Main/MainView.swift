@@ -53,7 +53,11 @@ struct MainView: View {
             .navigationTitle("SSH Log Viewer")
             .focusedValue(\.hostActions, HostActions(
                 add: triggerAddHost,
-                delete: { if let selectedHost = viewModel.selectedHost { triggerDelete(for: selectedHost) } }
+                delete: {
+                    if let selectedHost = viewModel.selectedHost {
+                        triggerDelete(for: selectedHost)
+                    }
+                }
             ))
             .sheet(isPresented: $showingAddHost) {
                 AddHostView(viewModel: viewModel)
