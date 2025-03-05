@@ -46,7 +46,6 @@ import Observation
         development.files = generateRandomFiles()
         
         hosts = [localServer, production, development]
-        selectedHost = hosts.first
     }
     
     // Generate a random list of files and directories
