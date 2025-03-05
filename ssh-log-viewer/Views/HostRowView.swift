@@ -7,7 +7,13 @@ struct HostRowView: View {
     var body: some View {
         HStack {
             Image(systemName: "server.rack")
-                .foregroundColor(.blue)
+                .foregroundColor(.primary)  // This will adapt to selection state
+                .padding(6)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(.secondary.opacity(0.2))  // Subtle background that works in both states
+                )
+
             VStack(alignment: .leading) {
                 Text(host.name)
                     .font(.headline)
