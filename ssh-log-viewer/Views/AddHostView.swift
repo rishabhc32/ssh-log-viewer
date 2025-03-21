@@ -9,6 +9,9 @@ struct AddHostView: View {
     @State private var hostname: String = ""
     @State private var username: String = ""
     @State private var port: String = "22"
+    
+    @State private var password: String = ""
+    @State private var showPassword = false
 
     var body: some View {
         VStack {
@@ -17,6 +20,24 @@ struct AddHostView: View {
                     TextField("Name", text: $name)
                     TextField("Hostname", text: $hostname)
                     TextField("Username", text: $username)
+                    
+                    HStack {
+                        if showPassword {
+                            TextField("Password", text: $password)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        } else {
+                            SecureField("Password", text: $password)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+                        
+                        Button(action: {
+                            showPassword.toggle()
+                        }) {
+                            Image(systemName: showPassword ? "eye.slash" : "eye")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
                     TextField("Port", text: $port)
                 }
             }
@@ -32,7 +53,7 @@ struct AddHostView: View {
                 Button("Add") {
                     let portNumber = Int(port) ?? 22
                     viewModel.addHost(
-                        name: name, hostname: hostname, username: username, port: portNumber
+                        name: name, hostname: hostname, username: username, password: password, port: portNumber
                     )
                     dismiss()
                 }

@@ -50,11 +50,11 @@ struct HostRowView: View {
     List {
         Section(header: Text("Hosts")) {
             HostRowView(
-                host: Host(name: "Production Server", hostname: "prod.example.com", username: "admin", port: 22),
+                host: Host(name: "Production Server", hostname: "prod.example.com", username: "admin", password: "test", port: 22),
                 deleteAction: { _ in }
             )
             HostRowView(
-                host: Host(name: "Development Server", hostname: "dev.example.com", username: "developer", port: 22),
+                host: Host(name: "Development Server", hostname: "dev.example.com", username: "developer", password: "test", port: 22),
                 deleteAction: { _ in }
             )
         }

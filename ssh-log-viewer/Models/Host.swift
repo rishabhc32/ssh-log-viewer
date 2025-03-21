@@ -5,6 +5,7 @@ struct Host: Identifiable, Hashable {
     var name: String
     var hostname: String
     var username: String
+    var password: String
     var port: Int = 22
     var files: [RemoteFile] = []
 
