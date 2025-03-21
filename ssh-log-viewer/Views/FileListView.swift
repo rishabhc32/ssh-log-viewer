@@ -56,29 +56,25 @@ struct FileListView: View {
             if let selectedHost = viewModel.selectedHost {
                 if viewModel.isConnecting {
                     // Loading state
-                    VStack {
+                    VStack(spacing: 8) {
                         ProgressView()
-                            .controlSize(.regular)
-                            .padding()
+                            .scaleEffect(1.2)  // Make it visually similar in size to the exclamation mark icon
+                            .controlSize(.small)
 
                         Text("Connecting to \(selectedHost.name)...")
-                            .foregroundColor(.secondary)
                     }
+                    .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if let error = viewModel.connectionError {
                     // Error state
-                    VStack(spacing: 16) {
+                    VStack(spacing: 8) {
                         Image(systemName: "exclamationmark.triangle")
-                            .font(.system(size: 40))
+                            .font(.system(size: 20))
                             .foregroundColor(.red)
 
-                        Text("Connection Error")
-                            .font(.headline)
-
-                        Text(error)
+                        Text("Connection Error: \(error)")
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
-                            .padding(.horizontal)
 
                         Button("Retry") {
                             Task {
@@ -86,6 +82,7 @@ struct FileListView: View {
                             }
                         }
                         .buttonStyle(.borderedProminent)
+                        .padding(.top, 8)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
