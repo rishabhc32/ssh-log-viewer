@@ -2,118 +2,119 @@ import Foundation
 import SwiftUI
 import Observation
 
-@Observable class HostViewModel {
+@Observable
+class HostViewModel {
     var hosts: [Host] = []
     var selectedHost: Host?
+    var isConnecting = false
+    var connectionError: String? = nil
+
+    // Dictionary to maintain an individual SSHManager for each host.
+    // This assumes that Host.id is a unique and Hashable identifier (e.g., UUID).
+    private var sshManagers: [UUID: SSHManager] = [:]
     
     // Computed property to get files for the selected host
     var files: [RemoteFile] {
         selectedHost?.files ?? []
     }
     
-    init() {
-        // Load sample data for demonstration
-        loadSampleData()
-    }
-    
-    func addHost(name: String, hostname: String, username: String, port: Int = 22) {
-        var newHost = Host(name: name, hostname: hostname, username: username, port: port)
-        // Generate random files for the new host
-        newHost.files = generateRandomFiles()
+    func addHost(name: String, hostname: String, username: String, password: String, port: Int = 22) {
+        let newHost = Host(name: name, hostname: hostname, username: username, password: password, port: port)
         hosts.append(newHost)
     }
     
     func removeHost(at offsets: IndexSet) {
+        // Disconnect and remove the SSH manager for each host being removed.
+        offsets.forEach { index in
+            let host = hosts[index]
+            disconnectFromHost(host: host)
+            sshManagers.removeValue(forKey: host.id)
+        }
         hosts.remove(atOffsets: offsets)
         
-        // If the selected host was removed, set selectedHost to nil
-        if let selectedHost = selectedHost, !hosts.contains(where: { $0.id == selectedHost.id }) {
+        // Clear the selected host if it was removed.
+        if let selectedHost = selectedHost,
+           !hosts.contains(where: { $0.id == selectedHost.id }) {
             self.selectedHost = nil
         }
     }
     
-    // MARK: - Sample Data
-    
-    private func loadSampleData() {
-        // Create hosts with random files
-        var localServer = Host(name: "Local Server", hostname: "localhost", username: "user")
-        localServer.files = generateRandomFiles()
-        
-        var production = Host(name: "Production", hostname: "example.com", username: "admin")
-        production.files = generateRandomFiles()
-        
-        var development = Host(name: "Development", hostname: "dev.example.com", username: "developer")
-        development.files = generateRandomFiles()
-        
-        hosts = [localServer, production, development]
+    /// Returns the SSHManager associated with a host.
+    /// If one does not exist, a new instance is created and added to the dictionary.
+    private func sshManager(for host: Host) -> SSHManager {
+        if let manager = sshManagers[host.id] {
+            return manager
+        } else {
+            let newManager = SSHManager()
+            sshManagers[host.id] = newManager
+            return newManager
+        }
     }
     
-    // Generate a random list of files and directories
-    private func generateRandomFiles() -> [RemoteFile] {
-        let now = Date()
-        var randomFiles: [RemoteFile] = []
+    /// Establishes an SSH connection for the given host.
+    /// - Parameters:
+    ///   - host: The host to connect to.
+    ///   - password: User password for the SSH connection.
+    ///   - remotePath: The remote path to fetch files from. The default is "/" (root).
+    func connectToHost(host: Host) async {
+        guard !isConnecting else { return }
         
-        // Possible directories
-        let possibleDirectories = [
-            ("var", "/var"),
-            ("etc", "/etc"),
-            ("home", "/home"),
-            ("usr", "/usr"),
-            ("bin", "/bin"),
-            ("sbin", "/sbin"),
-            ("lib", "/lib"),
-            ("tmp", "/tmp"),
-            ("boot", "/boot"),
-            ("dev", "/dev"),
-            ("opt", "/opt"),
-            ("mnt", "/mnt"),
-            ("media", "/media"),
-            ("srv", "/srv"),
-            ("proc", "/proc")
-        ]
+        isConnecting = true
+        connectionError = nil
         
-        // Possible files
-        let possibleFiles = [
-            ("passwd", "/etc/passwd", Int64(1024)),
-            ("shadow", "/etc/shadow", Int64(2048)),
-            ("hosts", "/etc/hosts", Int64(512)),
-            ("resolv.conf", "/etc/resolv.conf", Int64(128)),
-            ("fstab", "/etc/fstab", Int64(1024)),
-            ("bashrc", "/home/user/.bashrc", Int64(4096)),
-            ("profile", "/home/user/.profile", Int64(2048)),
-            ("nginx.conf", "/etc/nginx/nginx.conf", Int64(8192)),
-            ("apache2.conf", "/etc/apache2/apache2.conf", Int64(16384)),
-            ("php.ini", "/etc/php/php.ini", Int64(32768)),
-            ("my.cnf", "/etc/mysql/my.cnf", Int64(4096)),
-            ("sshd_config", "/etc/ssh/sshd_config", Int64(8192)),
-            ("crontab", "/etc/crontab", Int64(1024)),
-            ("syslog", "/var/log/syslog", Int64(1048576)),
-            ("auth.log", "/var/log/auth.log", Int64(524288)),
-            ("kern.log", "/var/log/kern.log", Int64(2097152)),
-            ("dmesg", "/var/log/dmesg", Int64(131072)),
-            ("boot.log", "/var/log/boot.log", Int64(262144)),
-            ("dpkg.log", "/var/log/dpkg.log", Int64(65536)),
-            ("alternatives.log", "/var/log/alternatives.log", Int64(32768))
-        ]
+        // Get or create the SSHManager for this host.
+        let manager = sshManager(for: host)
         
-        // Add random directories
-        let shuffledDirectories = possibleDirectories.shuffled()
-        let directoryCount = Int.random(in: 10...20)
-        
-        for i in 0..<min(directoryCount, shuffledDirectories.count) {
-            let dir = shuffledDirectories[i]
-            randomFiles.append(RemoteFile(name: dir.0, path: dir.1, isDirectory: true, size: Int64(4096), modificationDate: now))
+        do {
+            let connected = try manager.connect(
+                hostname: host.hostname,
+                port: host.port,
+                username: host.username,
+                password: host.password
+            )
+            
+            if connected {
+                let remotePath = "/home/\(host.username)/"
+                try await fetchRemoteFiles(for: host, path: remotePath)
+            }
+        } catch {
+            connectionError = "Connection failed: \(error.localizedDescription)"
         }
         
-        // Add random files (5-12)
-        let shuffledFiles = possibleFiles.shuffled()
-        let fileCount = Int.random(in: 5...12)
-        
-        for i in 0..<min(fileCount, shuffledFiles.count) {
-            let file = shuffledFiles[i]
-            randomFiles.append(RemoteFile(name: file.0, path: file.1, isDirectory: false, size: file.2, modificationDate: now))
+        isConnecting = false
+    }
+    
+    /// Disconnects the SSH connection for a given host and removes its connection from the dictionary.
+    func disconnectFromHost(host: Host) {
+        let manager = sshManager(for: host)
+        manager.disconnect()
+        sshManagers.removeValue(forKey: host.id)
+    }
+    
+    /// Fetches remote files from a given path for a host using its dedicated SSH connection.
+    func fetchRemoteFiles(for host: Host, path: String = "/") async throws {
+        let manager = sshManager(for: host)
+        do {
+            let remoteFiles = try manager.listFiles(path: path)
+            
+            // Update the host's files on the main thread
+            await MainActor.run {
+                if var updatedHost = hosts.first(where: { $0.id == host.id }) {
+                    updatedHost.files = remoteFiles
+                    
+                    // Update the host in the list
+                    if let index = hosts.firstIndex(where: { $0.id == host.id }) {
+                        hosts[index] = updatedHost
+                    }
+                    
+                    // Update selected host if needed
+                    if selectedHost?.id == host.id {
+                        selectedHost = updatedHost
+                    }
+                }
+            }
+        } catch {
+            throw error
         }
-        
-        return randomFiles
     }
 }

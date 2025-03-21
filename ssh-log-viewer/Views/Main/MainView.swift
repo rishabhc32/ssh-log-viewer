@@ -2,7 +2,11 @@ import Observation
 import SwiftUI
 
 struct MainView: View {
-    @State private var viewModel = HostViewModel()
+    @State private var viewModel: HostViewModel
+    
+    init(viewModel: HostViewModel? = nil) {
+        _viewModel = State(initialValue: viewModel ?? HostViewModel())
+    }
     @State private var showingAddHost = false
     @State private var hostToDelete: Host? = nil
 
@@ -12,6 +16,14 @@ struct MainView: View {
 
     private func triggerAddHost() {
         showingAddHost = true
+    }
+    
+    private func connectToSelectedHost() {
+        if let host = viewModel.selectedHost {
+            Task {
+                await viewModel.connectToHost(host: host)
+            }
+        }
     }
 
     var body: some View {
@@ -74,12 +86,31 @@ struct MainView: View {
                 Text("Are you sure you want to delete '\(host.name)'? This action cannot be undone.")
             }
         } detail: {
-            FileListView(viewModel: viewModel)
+            // Track when the selected host changes and connect if needed
+            if let selectedHost = viewModel.selectedHost {
+                FileListView(viewModel: viewModel)
+                    .onAppear(perform: connectToSelectedHost)
+                    .onChange(of: selectedHost.id) { connectToSelectedHost() }
+            } else {
+                Text("Select a host to view files")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
         .navigationSplitViewStyle(.balanced)
     }
 }
 
 #Preview {
-    MainView()
+    let viewModel = HostViewModel()
+    viewModel.hosts.append(
+        Host(
+            name: "Test Server",
+            hostname: "127.0.0.1",
+            username: "demo",
+            password: "demo",
+            port: 2222
+        )
+    )
+    return MainView(viewModel: viewModel)
 }
