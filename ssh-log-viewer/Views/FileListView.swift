@@ -60,7 +60,7 @@ struct FileListView: View {
                         ProgressView()
                             .controlSize(.regular)
                             .padding()
-                        
+
                         Text("Connecting to \(selectedHost.name)...")
                             .foregroundColor(.secondary)
                     }
@@ -71,15 +71,15 @@ struct FileListView: View {
                         Image(systemName: "exclamationmark.triangle")
                             .font(.system(size: 40))
                             .foregroundColor(.red)
-                        
+
                         Text("Connection Error")
                             .font(.headline)
-                        
+
                         Text(error)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
-                        
+
                         Button("Retry") {
                             Task {
                                 await viewModel.connectToHost(host: selectedHost)
@@ -97,12 +97,12 @@ struct FileListView: View {
                                 Spacer()
                                     .frame(height: 6)
                                     .id(topId)
-                                
+
                                 ForEach(viewModel.files) { file in
                                     FileRowView(file: file)
                                         .id(file.id)  // Using File ID as scroll target
                                 }
-                               
+
                             }
                             .scrollTargetLayout()
                         }
@@ -130,7 +130,7 @@ struct FileListView: View {
 
 #Preview {
     let viewModel = HostViewModel()
-    
+
     let host = Host(
         name: "Preview Server",
         hostname: "example.com",
@@ -153,10 +153,10 @@ struct FileListView: View {
             )
         ]
     )
-    
+
     viewModel.hosts.append(host)
     viewModel.selectedHost = host
-    
+
     return FileListView(viewModel: viewModel)
 }
 
@@ -193,4 +193,3 @@ struct FileListView: View {
     viewModel.connectionError = "Failed to connect to server. Please check your credentials and try again."
     return FileListView(viewModel: viewModel)
 }
-

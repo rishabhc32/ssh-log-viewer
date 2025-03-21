@@ -3,7 +3,7 @@ import SwiftUI
 
 struct MainView: View {
     @State private var viewModel: HostViewModel
-    
+
     init(viewModel: HostViewModel? = nil) {
         _viewModel = State(initialValue: viewModel ?? HostViewModel())
     }
@@ -17,7 +17,7 @@ struct MainView: View {
     private func triggerAddHost() {
         showingAddHost = true
     }
-    
+
     private func connectToSelectedHost() {
         if let host = viewModel.selectedHost {
             Task {
@@ -77,13 +77,17 @@ struct MainView: View {
             .alert("Delete Host", isPresented: .constant(hostToDelete != nil), presenting: hostToDelete) { host in
                 Button("Cancel", role: .cancel) { hostToDelete = nil }
                 Button("Delete", role: .destructive) {
-                    if let index = viewModel.hosts.firstIndex(where: { $0.id == host.id }) {
+                    if let index = viewModel.hosts.firstIndex(where: {
+                        $0.id == host.id
+                    }) {
                         viewModel.removeHost(at: IndexSet(integer: index))
                         hostToDelete = nil
                     }
                 }
             } message: { host in
-                Text("Are you sure you want to delete '\(host.name)'? This action cannot be undone.")
+                Text(
+                    "Are you sure you want to delete '\(host.name)'? This action cannot be undone."
+                )
             }
         } detail: {
             // Track when the selected host changes and connect if needed
