@@ -13,7 +13,7 @@ class HostViewModel {
 
     // Dictionary for storing an SSHManager for each host.
     private var sshManagers: [UUID: SSHManager] = [:]
-    
+
     /// Returns the NavigationState associated with a host.
     /// If one does not exist, a new instance is created and added to the dictionary.
     private func navigationState(for host: Host) -> NavigationState {
@@ -91,7 +91,7 @@ class HostViewModel {
         guard !isConnecting else { return }
         isConnecting = true
         connectionError = nil
-        
+
         let manager = sshManager(for: host)
 
         do {
@@ -143,9 +143,11 @@ class HostViewModel {
     // Updated unified navigation method using a navigation action.
     private func updateNavigation(for host: Host, action: NavigationAction) async {
         let state = navigationState(for: host)
-        
-        guard let targetPath = state.updateNavigation(action: action) else { return }
-        
+
+        guard let targetPath = state.updateNavigation(action: action) else {
+            return
+        }
+
         do {
             try await fetchRemoteFiles(for: host, path: targetPath)
         } catch {
