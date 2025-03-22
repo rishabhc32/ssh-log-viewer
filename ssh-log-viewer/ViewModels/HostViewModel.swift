@@ -72,20 +72,7 @@ class HostViewModel {
 
         hosts.append(newHost)
     }
-
-    func removeHost(at offsets: IndexSet) {
-        for index in offsets {
-            let host = hosts[index]
-            disconnectFromHost(host: host)  // Disconnect the host
-            navigationStates.removeValue(forKey: host.id)  // Clean up navigation state
-
-            if selectedHost?.id == host.id {
-                selectedHost = nil
-            }
-        }
-        hosts.remove(atOffsets: offsets)
-    }
-
+    
     // Connect to the host and initialize its navigation state if needed.
     func connectToHost(host: Host) async {
         guard !isConnecting else { return }
@@ -111,14 +98,27 @@ class HostViewModel {
         }
         isConnecting = false
     }
-
-    func disconnectFromHost(host: Host) {
+    
+    private func disconnectFromHost(host: Host) {
         let manager = sshManager(for: host)
         manager.disconnect()
         sshManagers.removeValue(forKey: host.id)
     }
+    
+    func removeHost(at offsets: IndexSet) {
+        for index in offsets {
+            let host = hosts[index]
+            disconnectFromHost(host: host)  // Disconnect the host
+            navigationStates.removeValue(forKey: host.id)  // Clean up navigation state
 
-    func fetchRemoteFiles(for host: Host, path: String = "/") async throws {
+            if selectedHost?.id == host.id {
+                selectedHost = nil
+            }
+        }
+        hosts.remove(atOffsets: offsets)
+    }
+
+    private func fetchRemoteFiles(for host: Host, path: String = "/") async throws {
         let manager = sshManager(for: host)
         let remoteFiles = try manager.listFiles(path: path)
 
