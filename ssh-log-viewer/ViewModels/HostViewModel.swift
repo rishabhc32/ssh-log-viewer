@@ -57,9 +57,18 @@ class HostViewModel {
     var files: [RemoteFile] {
         selectedHost?.files ?? []
     }
-    
-    func addHost(name: String, hostname: String, username: String, password: String, port: Int = 22) {
-        let newHost = Host(name: name, hostname: hostname, username: username, password: password, port: port)
+
+    func addHost(
+        name: String, hostname: String, username: String, password: String, port: Int = 22
+    ) {
+        let newHost = Host(
+            name: name,
+            hostname: hostname,
+            username: username,
+            password: password,
+            port: port
+        )
+
         hosts.append(newHost)
     }
 
