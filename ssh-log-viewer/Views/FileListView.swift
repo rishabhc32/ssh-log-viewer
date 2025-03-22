@@ -46,6 +46,7 @@ struct FileRowView: View {
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
     @State private var position: UUID?
+    
     // Mapping of Host ID to last scrolled position.For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
 
