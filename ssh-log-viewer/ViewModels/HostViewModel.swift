@@ -1,26 +1,6 @@
 import Observation
 import SwiftUI
 
-// A simple class to hold navigation information for a host.
-class NavigationState {
-    var currentPath: String
-    var backStack: [String]
-    var forwardStack: [String]
-    
-    init(currentPath: String, backStack: [String] = [], forwardStack: [String] = []) {
-        self.currentPath = currentPath
-        self.backStack = backStack
-        self.forwardStack = forwardStack
-    }
-}
-
-// Enum to designate navigation actions.
-enum NavigationAction {
-    case to(path: String)
-    case back
-    case forward
-}
-
 @Observable
 class HostViewModel {
     var hosts: [Host] = []
@@ -33,24 +13,45 @@ class HostViewModel {
 
     // Dictionary for storing an SSHManager for each host.
     private var sshManagers: [UUID: SSHManager] = [:]
+    
+    /// Returns the NavigationState associated with a host.
+    /// If one does not exist, a new instance is created and added to the dictionary.
+    private func navigationState(for host: Host) -> NavigationState {
+        if let state = navigationStates[host.id] {
+            return state
+        } else {
+            let newState = NavigationState(currentPath: host.homePath)
+            navigationStates[host.id] = newState
+            return newState
+        }
+    }
 
-    // Helper method to get the current navigation state
-    private func currentNavigationState() -> NavigationState? {
-        guard let host = selectedHost else { return nil }
-        return navigationStates[host.id]
+    /// Returns the SSHManager associated with a host.
+    /// If one does not exist, a new instance is created and added to the dictionary.
+    private func sshManager(for host: Host) -> SSHManager {
+        if let manager = sshManagers[host.id] {
+            return manager
+        } else {
+            let newManager = SSHManager()
+            sshManagers[host.id] = newManager
+            return newManager
+        }
     }
 
     // Computed properties using the navigation state.
     var currentPath: String {
-        return currentNavigationState()?.currentPath ?? "/"
+        guard let host = selectedHost else { return "/" }
+        return navigationState(for: host).currentPath
     }
 
     var canNavigateBack: Bool {
-        return currentNavigationState()?.backStack.isEmpty == false
+        guard let host = selectedHost else { return false }
+        return navigationState(for: host).canNavigateBack
     }
 
     var canNavigateForward: Bool {
-        return currentNavigationState()?.forwardStack.isEmpty == false
+        guard let host = selectedHost else { return false }
+        return navigationState(for: host).canNavigateForward
     }
 
     // Returns files for the selected host.
@@ -85,30 +86,14 @@ class HostViewModel {
         hosts.remove(atOffsets: offsets)
     }
 
-    /// Returns the SSHManager associated with a host.
-    /// If one does not exist, a new instance is created and added to the dictionary.
-    private func sshManager(for host: Host) -> SSHManager {
-        if let manager = sshManagers[host.id] {
-            return manager
-        } else {
-            let newManager = SSHManager()
-            sshManagers[host.id] = newManager
-            return newManager
-        }
-    }
-
     // Connect to the host and initialize its navigation state if needed.
     func connectToHost(host: Host) async {
         guard !isConnecting else { return }
         isConnecting = true
         connectionError = nil
-
-        // Only initialize navigation state if it doesn't exist for this host
-        if navigationStates[host.id] == nil {
-            navigationStates[host.id] = NavigationState(currentPath: host.homePath)
-        }
-
+        
         let manager = sshManager(for: host)
+
         do {
             let connected = try manager.connect(
                 hostname: host.hostname,
@@ -118,8 +103,8 @@ class HostViewModel {
             )
 
             if connected {
-                let path = navigationStates[host.id]!.currentPath
-                try await fetchRemoteFiles(for: host, path: path)
+                let state = navigationState(for: host)
+                try await fetchRemoteFiles(for: host, path: state.currentPath)
             }
         } catch {
             connectionError = "Connection failed: \(error.localizedDescription)"
@@ -144,9 +129,8 @@ class HostViewModel {
                 hosts[index].files = remoteFiles
 
                 // Update the current path for this host
-                if let state = navigationStates[host.id] {
-                    state.currentPath = path
-                }
+                let state = navigationState(for: host)
+                state.currentPath = path
 
                 // Update selected host if needed
                 if selectedHost?.id == host.id {
@@ -158,30 +142,10 @@ class HostViewModel {
 
     // Updated unified navigation method using a navigation action.
     private func updateNavigation(for host: Host, action: NavigationAction) async {
-        guard let state = navigationStates[host.id] else { return }
-
-        var targetPath: String = state.currentPath
-
-        switch action {
-        case .to(let path):
-            // Skip if trying to navigate to the current path
-            if path == state.currentPath { return }
-
-            state.backStack.append(state.currentPath)
-            state.forwardStack.removeAll()
-            targetPath = path
-        case .back:
-            guard let previousPath = state.backStack.popLast() else { return }
-            state.forwardStack.append(state.currentPath)
-            targetPath = previousPath
-        case .forward:
-            guard let nextPath = state.forwardStack.popLast() else { return }
-            state.backStack.append(state.currentPath)
-            targetPath = nextPath
-        }
-
-        state.currentPath = targetPath
-
+        let state = navigationState(for: host)
+        
+        guard let targetPath = state.updateNavigation(action: action) else { return }
+        
         do {
             try await fetchRemoteFiles(for: host, path: targetPath)
         } catch {
