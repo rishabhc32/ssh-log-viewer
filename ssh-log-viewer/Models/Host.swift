@@ -8,7 +8,7 @@ struct Host: Identifiable, Hashable {
     var password: String
     var port: Int = 22
     var files: [RemoteFile] = []
-    
+
     var homePath: String {
         return FormattingUtils.joinPath(basePath: "/home", filename: username)
     }
