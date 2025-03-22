@@ -8,7 +8,28 @@ class HostViewModel {
     var selectedHost: Host?
     var isConnecting = false
     var connectionError: String? = nil
-
+    
+    // Directory navigation properties - maintained per host
+    private var hostNavigationState: [UUID: (currentPath: String, backStack: [String], forwardStack: [String])] = [:]
+    
+    // Helper method to get navigation state for the current host
+    private func currentNavigationState() -> (currentPath: String, backStack: [String], forwardStack: [String])? {
+        return selectedHost.flatMap { hostNavigationState[$0.id] }
+    }
+    
+    // Computed properties to get navigation state for the current host
+    var currentPath: String {
+        return currentNavigationState()?.currentPath ?? "/"
+    }
+    
+    var canNavigateBack: Bool {
+        return currentNavigationState()?.backStack.isEmpty == false
+    }
+    
+    var canNavigateForward: Bool {
+        return currentNavigationState()?.forwardStack.isEmpty == false
+    }
+    
     // Dictionary to maintain an individual SSHManager for each host.
     // This assumes that Host.id is a unique and Hashable identifier (e.g., UUID).
     private var sshManagers: [UUID: SSHManager] = [:]
@@ -24,19 +45,19 @@ class HostViewModel {
     }
     
     func removeHost(at offsets: IndexSet) {
-        // Disconnect and remove the SSH manager for each host being removed.
-        offsets.forEach { index in
+        for index in offsets {
             let host = hosts[index]
-            disconnectFromHost(host: host)
-            sshManagers.removeValue(forKey: host.id)
+            disconnectFromHost(host: host)  // Disconnect the host            
+            hostNavigationState.removeValue(forKey: host.id) // Clean up navigation state
+            
+            // If the removed host is the selected one, clear the selection immediately.
+            if selectedHost?.id == host.id {
+                self.selectedHost = nil
+            }
         }
-        hosts.remove(atOffsets: offsets)
         
-        // Clear the selected host if it was removed.
-        if let selectedHost = selectedHost,
-           !hosts.contains(where: { $0.id == selectedHost.id }) {
-            self.selectedHost = nil
-        }
+        // Remove hosts from the list.
+        hosts.remove(atOffsets: offsets)
     }
     
     /// Returns the SSHManager associated with a host.
@@ -61,6 +82,12 @@ class HostViewModel {
         
         isConnecting = true
         connectionError = nil
+        
+        // Only initialize navigation state if it doesn't exist for this host
+        if hostNavigationState[host.id] == nil {
+            let homePath = FormattingUtils.joinPath(basePath: "/home", filename: host.username)
+            hostNavigationState[host.id] = (currentPath: homePath, backStack: [], forwardStack: [])
+        }
         
         // Get or create the SSHManager for this host.
         let manager = sshManager(for: host)
@@ -110,11 +137,114 @@ class HostViewModel {
                     // Update selected host if needed
                     if selectedHost?.id == host.id {
                         selectedHost = updatedHost
+                        
+                        // Update navigation state with the new path
+                        if var state = hostNavigationState[host.id] {
+                            // Only update if the path is different
+                            if state.currentPath != path {
+                                state.currentPath = path
+                                hostNavigationState[host.id] = state
+                            }
+                        }
                     }
                 }
             }
         } catch {
             throw error
+        }
+    }
+    
+    /// Navigate to a directory
+    func navigateToDirectory(_ directory: RemoteFile) async {
+        guard let host = selectedHost, directory.isDirectory else { return }
+        
+        // Get or create navigation state
+        var state = hostNavigationState[host.id] ?? (currentPath: "/", backStack: [], forwardStack: [])
+        
+        // Add current path to back stack and clear forward stack
+        state.backStack.append(state.currentPath)
+        state.forwardStack = []
+        state.currentPath = directory.path
+        
+        // Update the state
+        hostNavigationState[host.id] = state
+        
+        do {
+            try await fetchRemoteFiles(for: host, path: directory.path)
+        } catch {
+            connectionError = "Failed to navigate to directory: \(error.localizedDescription)"
+        }
+    }
+    
+    /// Navigate back to the previous directory
+    func navigateBack() async {
+        guard let host = selectedHost, canNavigateBack else { return }
+        
+        // Get navigation state
+        guard var state = hostNavigationState[host.id] else { return }
+        
+        // Get the previous path from the back stack
+        if let previousPath = state.backStack.popLast() {
+            // Add current path to forward stack
+            state.forwardStack.append(state.currentPath)
+            state.currentPath = previousPath
+            
+            // Update the state
+            hostNavigationState[host.id] = state
+            
+            do {
+                try await fetchRemoteFiles(for: host, path: previousPath)
+            } catch {
+                connectionError = "Failed to navigate back: \(error.localizedDescription)"
+            }
+        }
+    }
+    
+    /// Navigate to the home directory
+    func navigateToHome() async {
+        guard let host = selectedHost else { return }
+        
+        let homePath = FormattingUtils.joinPath(basePath: "/home", filename: host.username)
+        
+        // Get or create navigation state
+        var state = hostNavigationState[host.id] ?? (currentPath: "/", backStack: [], forwardStack: [])
+        
+        // Add current path to back stack and clear forward stack
+        state.backStack.append(state.currentPath)
+        state.forwardStack = []
+        state.currentPath = homePath
+        
+        // Update the state
+        hostNavigationState[host.id] = state
+        
+        do {
+            try await fetchRemoteFiles(for: host, path: homePath)
+        } catch {
+            connectionError = "Failed to navigate to home directory: \(error.localizedDescription)"
+        }
+    }
+    
+    /// Navigate forward to the next directory
+    func navigateForward() async {
+        guard let host = selectedHost, canNavigateForward else { return }
+        
+        // Get navigation state
+        guard var state = hostNavigationState[host.id] else { return }
+        
+        // Get the next path from the forward stack
+        if let nextPath = state.forwardStack.popLast() {
+            // Add current path to back stack
+            state.backStack.append(state.currentPath)
+            state.currentPath = nextPath
+            
+            // Update the state
+            hostNavigationState[host.id] = state
+            
+            do {
+                try await fetchRemoteFiles(for: host, path: nextPath)
+            } catch {
+                connectionError = "Failed to navigate forward: \(error.localizedDescription)"
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 
 struct FileRowView: View {
     let file: RemoteFile
+    var onDirectoryTap: ((RemoteFile) -> Void)? = nil
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,6 +38,12 @@ struct FileRowView: View {
             .padding(.horizontal, 12)
             .padding(.top, 0)
             .padding(.bottom, 6)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if file.isDirectory {
+                    onDirectoryTap?(file)
+                }
+            }
 
             Divider()
         }
@@ -49,6 +56,7 @@ struct FileListView: View {
     
     // Mapping of Host ID to last scrolled position.For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
+    @State private var showingPathMenu = false
 
     private let topId = UUID()
 
@@ -87,7 +95,7 @@ struct FileListView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
-                    // File list
+                    // File list with native Finder-style navigation
                     ScrollViewReader { proxy in
                         ScrollView {
                             LazyVStack {
@@ -95,12 +103,16 @@ struct FileListView: View {
                                 Spacer()
                                     .frame(height: 6)
                                     .id(topId)
-
+                                
                                 ForEach(viewModel.files) { file in
-                                    FileRowView(file: file)
-                                        .id(file.id)  // Using File ID as scroll target
+                                    FileRowView(file: file, onDirectoryTap: { directory in
+                                        Task {
+                                            await viewModel.navigateToDirectory(directory)
+                                        }
+                                    })
+                                     .id(file.id)  // Using File ID as scroll target
                                 }
-
+                                
                             }
                             .scrollTargetLayout()
                         }
@@ -114,6 +126,39 @@ struct FileListView: View {
                         .onChange(of: selectedHost.id) {
                             let destination = scrollHistory[selectedHost.id] ?? topId
                             proxy.scrollTo(destination, anchor: .top)
+                        }
+                        .navigationTitle(viewModel.currentPath)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .navigation) {
+                                Button(action: {
+                                    Task {
+                                        await viewModel.navigateBack()
+                                    }
+                                }) {
+                                    Image(systemName: "chevron.left")
+                                }
+                                .help("Go back")
+                                .disabled(!viewModel.canNavigateBack)
+                                
+                                Button(action: {
+                                    Task {
+                                        await viewModel.navigateForward()
+                                    }
+                                }) {
+                                    Image(systemName: "chevron.right")
+                                }
+                                .help("Go forward")
+                                .disabled(!viewModel.canNavigateForward)
+                                
+                                Button(action: {
+                                    Task {
+                                        await viewModel.navigateToHome()
+                                    }
+                                }) {
+                                    Image(systemName: "house")
+                                }
+                                .help("Go to home directory")
+                            }
                         }
                     }
                 }
