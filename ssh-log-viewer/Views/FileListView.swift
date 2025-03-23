@@ -1,7 +1,5 @@
 import Observation
 import SwiftUI
-import AppKit
-import UniformTypeIdentifiers
 
 struct FileRowView: View {
     let file: RemoteFile
