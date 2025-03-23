@@ -4,8 +4,15 @@ import SwiftUI
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
     @State private var position: UUID?
-    @State private var selectedFileId: UUID?
-    @State private var currentIndex: Int?
+    @State private var selectedFileIndex: Int?
+    
+    // Computed property for selectedFileId based on selectedFileIndex
+    private var selectedFileId: UUID? {
+        if let index = selectedFileIndex, index < viewModel.files.count {
+            return viewModel.files[index].id
+        }
+        return nil
+    }
 
     // Mapping of Host ID to last scrolled position. For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
@@ -63,6 +70,7 @@ struct FileListView: View {
                                     )
                                     .id(file.id)  // Using File ID as scroll target
                                     .gesture(TapGesture(count: 2).onEnded {
+                                        // double click to navigate to directory
                                         if file.isDirectory {
                                             Task {
                                                 await viewModel.navigateToDirectory(file)
@@ -70,8 +78,8 @@ struct FileListView: View {
                                         }
                                     })
                                     .simultaneousGesture(TapGesture().onEnded {
-                                        selectedFileId = file.id
-                                        currentIndex = viewModel.files.firstIndex(where: { $0.id == file.id })
+                                        // single click to highlight the file
+                                        selectedFileIndex = viewModel.files.firstIndex(where: { $0.id == file.id })
                                     })
                                 }
                                 
@@ -82,33 +90,27 @@ struct FileListView: View {
                         .focusEffectDisabled()
                         .onKeyPress(keys: [.upArrow, .downArrow, .return]) { keyPress in
                             switch keyPress.key {
-                            case .upArrow:
-                                // Navigate to previous file
-                                if let index = currentIndex, index > 0 {
-                                    currentIndex = index - 1
-                                    selectedFileId = viewModel.files[index - 1].id
-                                    position = selectedFileId
-                                } else if currentIndex == nil && !viewModel.files.isEmpty {
-                                    // If no file is selected, select the first one
-                                    currentIndex = 0
-                                    selectedFileId = viewModel.files[0].id
-                                    position = selectedFileId
+                            case .upArrow, .downArrow:
+                                // Only proceed if files exist
+                                guard !viewModel.files.isEmpty else { break }
+                                
+                                if let index = selectedFileIndex {
+                                    let increment = (keyPress.key == .upArrow) ? -1 : 1
+                                    let newIndex = index + increment
+                                    // Only update if the new index is within valid bounds
+                                    if newIndex >= 0 && newIndex < viewModel.files.count {
+                                        selectedFileIndex = newIndex
+                                    }
+                                } else {
+                                    // If no file is selected, default to the first file
+                                    selectedFileIndex = 0
                                 }
-                            case .downArrow:
-                                // Navigate to next file
-                                if let index = currentIndex, index < viewModel.files.count - 1 {
-                                    currentIndex = index + 1
-                                    selectedFileId = viewModel.files[index + 1].id
-                                    position = selectedFileId
-                                } else if currentIndex == nil && !viewModel.files.isEmpty {
-                                    // If no file is selected, select the first one
-                                    currentIndex = 0
-                                    selectedFileId = viewModel.files[0].id
-                                    position = selectedFileId
-                                }
+                                // Update the position after changing the selection
+                                position = selectedFileId
+
                             case .return:
-                                // Open directory or handle file selection
-                                if let index = currentIndex, index < viewModel.files.count {
+                                // Handle file/directory selection
+                                if let index = selectedFileIndex, index < viewModel.files.count {
                                     let selectedFile = viewModel.files[index]
                                     if selectedFile.isDirectory {
                                         Task {
@@ -116,6 +118,7 @@ struct FileListView: View {
                                         }
                                     }
                                 }
+                            
                             default:
                                 break
                             }
@@ -132,9 +135,10 @@ struct FileListView: View {
                             // Reset scroll position when changing hosts
                             let destination = scrollHistory[selectedHost.id] ?? topId
                             proxy.scrollTo(destination, anchor: .top)
-
-                            // Reset current index when changing hosts
-                            currentIndex = nil
+                        }
+                        .onChange(of: viewModel.files) {
+                            // Reset selection when navigating to a new directory
+                            selectedFileIndex = nil
                         }
                         .navigationTitle(viewModel.currentPath)
                         .toolbar {
