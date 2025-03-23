@@ -27,10 +27,11 @@ struct FileRowView: View {
                 VStack(alignment: .leading) {
                     Text(file.name)
                         .font(.body)
+                        .foregroundColor(isSelected ? .white : .primary)
 
                     Text(file.path)
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(isSelected ? .white : .secondary)
                 }
 
                 Spacer()
