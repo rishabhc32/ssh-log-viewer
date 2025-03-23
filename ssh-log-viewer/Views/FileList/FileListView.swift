@@ -57,7 +57,7 @@ struct FileListView: View {
 
                                 ForEach(viewModel.files) { file in
                                     FileRowView(
-                                        file: file, 
+                                        file: file,
                                         isSelected: selectedFileId == file.id
                                     )
                                     .id(file.id)  // Using File ID as scroll target
@@ -75,6 +75,21 @@ struct FileListView: View {
                                 
                             }
                             .scrollTargetLayout()
+                        }
+                        .focusable()
+                        .focusEffectDisabled()
+                        .onKeyPress(keys: [.upArrow, .downArrow, .return]) { keyPress in
+                            switch keyPress.key {
+                            case .upArrow:
+                                print("Up arrow pressed!")
+                            case .downArrow:
+                                print("Down arrow pressed!")
+                            case .return:
+                                print("Return pressed!")
+                            default:
+                                break
+                            }
+                            return .handled
                         }
                         .background(.background)
                         .scrollPosition(id: $position)
@@ -153,7 +168,7 @@ struct FileListView: View {
                 isDirectory: false,
                 size: 1024,
                 modificationDate: Date()
-            )
+            ),
         ]
     )
 
