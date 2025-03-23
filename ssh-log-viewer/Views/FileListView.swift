@@ -1,5 +1,7 @@
 import Observation
 import SwiftUI
+import AppKit
+import UniformTypeIdentifiers
 
 struct FileRowView: View {
     let file: RemoteFile
@@ -9,12 +11,19 @@ struct FileRowView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Image(systemName: file.isDirectory ? "folder.fill" : "doc.fill")
-                    .foregroundColor(file.isDirectory ? .blue : .gray)
-                    .font(.system(size: 16))
-                    .frame(width: 26)
-                    .padding(.trailing, 5)
-
+                Group {
+                    if file.isDirectory {
+                        Image("folder")
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Image("doc")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+                .frame(width: 18, height: 18)
+                
                 VStack(alignment: .leading) {
                     Text(file.name)
                         .font(.body)
@@ -40,7 +49,7 @@ struct FileRowView: View {
             .padding(.top, 0)
             .padding(.bottom, 6)
             .contentShape(Rectangle())
-            .background(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
+            .background(isSelected ? Color.accentColor : Color.clear)
 
             Divider()
         }
