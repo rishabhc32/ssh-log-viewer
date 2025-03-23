@@ -8,7 +8,7 @@ struct FileRowView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Image(systemName: file.isDirectory ? "folder" : "doc")
+                Image(systemName: file.isDirectory ? "folder.fill" : "doc.fill")
                     .foregroundColor(file.isDirectory ? .blue : .gray)
                     .font(.system(size: 16))
                     .frame(width: 26)
