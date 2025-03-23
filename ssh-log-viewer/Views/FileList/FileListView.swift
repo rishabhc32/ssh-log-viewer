@@ -5,10 +5,9 @@ struct FileListView: View {
     @Bindable var viewModel: HostViewModel
     @State private var position: UUID?
     @State private var selectedFileId: UUID?
-    
+
     // Mapping of Host ID to last scrolled position. For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
-    @State private var showingPathMenu = false
 
     private let topId = UUID()
 
@@ -55,7 +54,7 @@ struct FileListView: View {
                                 Spacer()
                                     .frame(height: 6)
                                     .id(topId)
-                                
+
                                 ForEach(viewModel.files) { file in
                                     FileRowView(
                                         file: file, 
@@ -100,7 +99,7 @@ struct FileListView: View {
                                 }
                                 .help("Go back")
                                 .disabled(!viewModel.canNavigateBack)
-                                
+
                                 Button(action: {
                                     Task {
                                         await viewModel.navigateForward()
@@ -110,7 +109,7 @@ struct FileListView: View {
                                 }
                                 .help("Go forward")
                                 .disabled(!viewModel.canNavigateForward)
-                                
+
                                 Button(action: {
                                     Task {
                                         await viewModel.navigateToHome()
@@ -157,10 +156,10 @@ struct FileListView: View {
             )
         ]
     )
-    
+
     viewModel.hosts = [host]
     viewModel.selectedHost = host
-    
+
     return FileListView(viewModel: viewModel)
 }
 
