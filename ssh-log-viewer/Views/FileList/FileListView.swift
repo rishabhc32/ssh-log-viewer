@@ -1,66 +1,12 @@
 import Observation
 import SwiftUI
 
-struct FileRowView: View {
-    let file: RemoteFile
-    var isSelected: Bool = false
-    var onDirectoryTap: ((RemoteFile) -> Void)? = nil
-
-    var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Group {
-                    if file.isDirectory {
-                        Image("folder")
-                            .resizable()
-                            .scaledToFit()
-                    } else {
-                        Image("doc")
-                            .resizable()
-                            .scaledToFit()
-                    }
-                }
-                .frame(width: 18, height: 18)
-                
-                VStack(alignment: .leading) {
-                    Text(file.name)
-                        .font(.body)
-                        .foregroundColor(isSelected ? .white : .primary)
-
-                    Text(file.path)
-                        .font(.subheadline)
-                        .foregroundColor(isSelected ? .white : .secondary)
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing) {
-                    Text(FormattingUtils.formatFileSize(file.size))
-                        .font(.caption)
-                        .foregroundColor(isSelected ? .white : .secondary)
-
-                    Text(FormattingUtils.formatDate(file.modificationDate))
-                        .font(.caption)
-                        .foregroundColor(isSelected ? .white : .secondary)
-                }
-            }
-            .padding(.horizontal, 12)
-            .padding(.top, 2)
-            .padding(.bottom, 4)
-            .contentShape(Rectangle())
-            .background(isSelected ? Color.accentColor : Color.clear)
-
-            Divider()
-        }
-    }
-}
-
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
     @State private var position: UUID?
     @State private var selectedFileId: UUID?
     
-    // Mapping of Host ID to last scrolled position.For scroll position tracking we use File ID.
+    // Mapping of Host ID to last scrolled position. For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
     @State private var showingPathMenu = false
 
@@ -186,7 +132,7 @@ struct FileListView: View {
     }
 }
 
-#Preview {
+#Preview("Files") {
     let viewModel = HostViewModel()
 
     let host = Host(
@@ -203,18 +149,18 @@ struct FileListView: View {
                 modificationDate: Date()
             ),
             RemoteFile(
-                name: "notes.txt",
-                path: "/home/user/notes.txt",
+                name: "file.txt",
+                path: "/home/user/file.txt",
                 isDirectory: false,
                 size: 1024,
-                modificationDate: Date().addingTimeInterval(-86400)
+                modificationDate: Date()
             )
         ]
     )
-
-    viewModel.hosts.append(host)
+    
+    viewModel.hosts = [host]
     viewModel.selectedHost = host
-
+    
     return FileListView(viewModel: viewModel)
 }
 
