@@ -45,8 +45,8 @@ struct FileRowView: View {
                 }
             }
             .padding(.horizontal, 12)
-            .padding(.top, 0)
-            .padding(.bottom, 6)
+            .padding(.top, 2)
+            .padding(.bottom, 4)
             .contentShape(Rectangle())
             .background(isSelected ? Color.accentColor : Color.clear)
 
@@ -104,7 +104,7 @@ struct FileListView: View {
                     // File list with native Finder-style navigation
                     ScrollViewReader { proxy in
                         ScrollView {
-                            LazyVStack {
+                            LazyVStack(spacing: 0) {
                                 // Add top padding to the first element
                                 Spacer()
                                     .frame(height: 6)
