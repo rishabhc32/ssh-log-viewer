@@ -37,11 +37,11 @@ struct FileRowView: View {
                 VStack(alignment: .trailing) {
                     Text(FormattingUtils.formatFileSize(file.size))
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(isSelected ? .white : .secondary)
 
                     Text(FormattingUtils.formatDate(file.modificationDate))
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(isSelected ? .white : .secondary)
                 }
             }
             .padding(.horizontal, 12)
