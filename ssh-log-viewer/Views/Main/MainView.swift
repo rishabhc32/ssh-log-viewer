@@ -107,14 +107,21 @@ struct MainView: View {
 
 #Preview {
     let viewModel = HostViewModel()
-    viewModel.hosts.append(
+    viewModel.hosts = [
         Host(
             name: "Test Server",
             hostname: "127.0.0.1",
             username: "demo",
             password: "demo",
             port: 2222
+        ),
+        Host(
+            name: "New Test Server",
+            hostname: "127.0.0.1",
+            username: "demo",
+            password: "demo",
+            port: 2222
         )
-    )
+    ]
     return MainView(viewModel: viewModel)
 }
