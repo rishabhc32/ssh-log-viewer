@@ -3,6 +3,7 @@ import SwiftUI
 
 struct FileRowView: View {
     let file: RemoteFile
+    var isSelected: Bool = false
     var onDirectoryTap: ((RemoteFile) -> Void)? = nil
 
     var body: some View {
@@ -39,11 +40,7 @@ struct FileRowView: View {
             .padding(.top, 0)
             .padding(.bottom, 6)
             .contentShape(Rectangle())
-            .onTapGesture {
-                if file.isDirectory {
-                    onDirectoryTap?(file)
-                }
-            }
+            .background(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
 
             Divider()
         }
@@ -53,6 +50,7 @@ struct FileRowView: View {
 struct FileListView: View {
     @Bindable var viewModel: HostViewModel
     @State private var position: UUID?
+    @State private var selectedFileId: UUID?
     
     // Mapping of Host ID to last scrolled position.For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
@@ -105,12 +103,21 @@ struct FileListView: View {
                                     .id(topId)
                                 
                                 ForEach(viewModel.files) { file in
-                                    FileRowView(file: file, onDirectoryTap: { directory in
-                                        Task {
-                                            await viewModel.navigateToDirectory(directory)
+                                    FileRowView(
+                                        file: file, 
+                                        isSelected: selectedFileId == file.id
+                                    )
+                                    .id(file.id)  // Using File ID as scroll target
+                                    .gesture(TapGesture(count: 2).onEnded {
+                                        if file.isDirectory {
+                                            Task {
+                                                await viewModel.navigateToDirectory(file)
+                                            }
                                         }
                                     })
-                                     .id(file.id)  // Using File ID as scroll target
+                                    .simultaneousGesture(TapGesture().onEnded {
+                                        selectedFileId = file.id
+                                    })
                                 }
                                 
                             }
