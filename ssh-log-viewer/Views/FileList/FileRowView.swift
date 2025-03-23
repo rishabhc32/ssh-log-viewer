@@ -55,13 +55,50 @@ struct FileRowView: View {
 }
 
 #Preview {
-    let file = RemoteFile(
-        name: "Documents",
-        path: "/home/user/Documents",
-        isDirectory: true,
-        size: 4096,
-        modificationDate: Date()
-    )
+    let files = [
+        // Directories
+        RemoteFile(
+            name: "Documents",
+            path: "/home/user/Documents",
+            isDirectory: true,
+            size: 4096,
+            modificationDate: Date().addingTimeInterval(-86400 * 2) // 2 days ago
+        ),
+        RemoteFile(
+            name: "Downloads",
+            path: "/home/user/Downloads",
+            isDirectory: true,
+            size: 4096,
+            modificationDate: Date().addingTimeInterval(-86400) // 1 day ago
+        ),
+        
+        // Files
+        RemoteFile(
+            name: "report.pdf",
+            path: "/home/user/report.pdf",
+            isDirectory: false,
+            size: 2048576, // 2MB
+            modificationDate: Date().addingTimeInterval(-3600 * 5) // 5 hours ago
+        ),
+        RemoteFile(
+            name: "config.json",
+            path: "/home/user/config.json",
+            isDirectory: false,
+            size: 1024, // 1KB
+            modificationDate: Date().addingTimeInterval(-3600) // 1 hour ago
+        ),
+        RemoteFile(
+            name: "image.jpg",
+            path: "/home/user/image.jpg",
+            isDirectory: false,
+            size: 5242880, // 5MB
+            modificationDate: Date()
+        )
+    ]
     
-    return FileRowView(file: file, isSelected: false)
+    return VStack(spacing: 0) {
+        ForEach(files) { file in
+            FileRowView(file: file, isSelected: file.name == "config.json" || file.name == "Downloads")
+        }
+    }
 }
