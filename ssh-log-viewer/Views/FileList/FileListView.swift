@@ -5,6 +5,7 @@ struct FileListView: View {
     @Bindable var viewModel: HostViewModel
     @State private var position: UUID?
     @State private var selectedFileId: UUID?
+    @State private var currentIndex: Int?
 
     // Mapping of Host ID to last scrolled position. For scroll position tracking we use File ID.
     @State private var scrollHistory: [UUID: UUID] = [:]
@@ -70,6 +71,7 @@ struct FileListView: View {
                                     })
                                     .simultaneousGesture(TapGesture().onEnded {
                                         selectedFileId = file.id
+                                        currentIndex = viewModel.files.firstIndex(where: { $0.id == file.id })
                                     })
                                 }
                                 
@@ -81,11 +83,39 @@ struct FileListView: View {
                         .onKeyPress(keys: [.upArrow, .downArrow, .return]) { keyPress in
                             switch keyPress.key {
                             case .upArrow:
-                                print("Up arrow pressed!")
+                                // Navigate to previous file
+                                if let index = currentIndex, index > 0 {
+                                    currentIndex = index - 1
+                                    selectedFileId = viewModel.files[index - 1].id
+                                    position = selectedFileId
+                                } else if currentIndex == nil && !viewModel.files.isEmpty {
+                                    // If no file is selected, select the first one
+                                    currentIndex = 0
+                                    selectedFileId = viewModel.files[0].id
+                                    position = selectedFileId
+                                }
                             case .downArrow:
-                                print("Down arrow pressed!")
+                                // Navigate to next file
+                                if let index = currentIndex, index < viewModel.files.count - 1 {
+                                    currentIndex = index + 1
+                                    selectedFileId = viewModel.files[index + 1].id
+                                    position = selectedFileId
+                                } else if currentIndex == nil && !viewModel.files.isEmpty {
+                                    // If no file is selected, select the first one
+                                    currentIndex = 0
+                                    selectedFileId = viewModel.files[0].id
+                                    position = selectedFileId
+                                }
                             case .return:
-                                print("Return pressed!")
+                                // Open directory or handle file selection
+                                if let index = currentIndex, index < viewModel.files.count {
+                                    let selectedFile = viewModel.files[index]
+                                    if selectedFile.isDirectory {
+                                        Task {
+                                            await viewModel.navigateToDirectory(selectedFile)
+                                        }
+                                    }
+                                }
                             default:
                                 break
                             }
@@ -99,8 +129,12 @@ struct FileListView: View {
                             }
                         }
                         .onChange(of: selectedHost.id) {
+                            // Reset scroll position when changing hosts
                             let destination = scrollHistory[selectedHost.id] ?? topId
                             proxy.scrollTo(destination, anchor: .top)
+
+                            // Reset current index when changing hosts
+                            currentIndex = nil
                         }
                         .navigationTitle(viewModel.currentPath)
                         .toolbar {
